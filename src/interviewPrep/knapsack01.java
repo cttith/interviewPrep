@@ -46,24 +46,25 @@ public class knapsack01 {
 	}
 	
 	// take it or leave it!!! [greedy]
-	// table represents max value value[i] @ weight w
+	// table represents max value at item i w/ w being the weight accrued so far
+	// optimize for maximum value at weight w for item i
 	public static int knapSackDPbottomUp(int capacity, int[] values, int[] weights) {
 		
 		int[][] memo = new int[values.length+1][capacity+1];    // skip 0-th based
 		
-		for(int i = 0; i < values.length; i++) {				// run for every value in array, building the table
+		for(int i = 0; i <= values.length; i++) {				// run for every value in array, building the table
 			for(int w = 0; w <= capacity; w++) {				// run until capacity is met
 				
 				if(i == 0 || w == 0) {
 					memo[i][w] = 0;
 				}
 				else if(weights[i-1] <= w) {	// if we can take value[i]
-					memo[i][w] = Math.max(values[i-1] + memo[i-1][w-weights[i-1]] , memo[i-1][w]);
-				}
+					memo[i][w] = Math.max(values[i-1] + memo[i-1][w-weights[i-1]] , memo[i-1][w]);  // [i-1] to grab value of previous knapSack
+																									// [w-weights[i-1]] to find max value 
+				}																					//  when weight is w-weights[i-1] 
 				else {							// if we can't take, take the value of the previous max value (i-1)
 					memo[i][w] = memo[i-1][w];
-				}
-				
+				}		
 			}
 		}
 		
