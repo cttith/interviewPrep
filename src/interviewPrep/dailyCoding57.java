@@ -14,52 +14,62 @@ For example, given the string "the quick brown fox jumps over the lazy dog" and 
 
 public class dailyCoding57 {
 
-	// split words, if adjacent words length + (1*# words) <= 10 combine, else move on
+
+	// split words 
 	
 	public static String[] split(String s, int k) {
 		
+		
+		
+		
 		String[] words = s.split(" ");
 		
-		String[] kLetters = new String[words.length/k];
-		
-		int currLen = 0;
-		int splitListidx = 0
-		int startWordidx = 0;
-		
-		HashMap<String,Integer> hm = new HashMap<String,Integer>();
-		
-		for(int i = 0; i < words.length; i++) {
-			hm.put(words[i], i);
-		}
-		
-		for(int i = 0; i < words.length; i++) {
-			
-			if(words[i].length() + currLen + (1 * startWordidx - i) <= 10) {
-				currLen += words[i].length();
-				
-			}else {
-				String newString = "";
-				for(int j = startWordidx; j < i; j++) {
-					if(j == i-1) {
-						newString = newString.concat(words[j]);
-					}else {
-					newString = newString.concat(words[j] + " ");
-					}
-				}
-				
-				kLetters[splitListidx] = newString;
-				currLen = words[i].length();
-				startWordidx = i;
-				splitListidx++;
-				
+		for(String word : words) {
+			if(word.length() > k) {
+				System.out.println("NULLL");
+				return null;
 			}
 		}
 		
 		
+		double size = Math.ceil(s.length()/(double)k);
+		//System.out.println(size);
+		String[] kLetters = new String[(int)size];
+		String newWord = words[0];
+		int kLettersIDX = 0;
+		for(String word: words) {
+			if(newWord == word) continue;
+			
+			//System.out.println("word = " + word);
+
+			if ((newWord.length() + word.length() + 1) > k) {
+				//System.out.println(kLettersIDX);
+				kLetters[kLettersIDX] = newWord;
+				newWord = word;
+				kLettersIDX++;
+				
+			}
+			else {
+				newWord = newWord.concat(" " + word);
+				//System.out.println("new word =" + newWord);
+			}
+		}
+		
+		if(kLetters[kLetters.length-1] != newWord) {
+			kLetters[kLetters.length-1] = newWord;
+		}
 		
 		
 		
-		return words;
+		for(String word : kLetters) {
+			System.out.println(word);
+		}
+		
+		
+		
+		
+		
+		return kLetters;
 	}
 	
 	
@@ -69,11 +79,11 @@ public class dailyCoding57 {
 	
 	public static void main(String[] args) {
 		
-		String s = "the quick brown fox jumps over the lazy dog";
+		//String s = "the quick brown fox jumps over the lazy dog";
+		String s = "abcdefghijklmno";
 		int k = 10;
 		
-		split(s,k);
-		
+		String[] res = split(s,k);
 		
 		
 	}
